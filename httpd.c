@@ -72,6 +72,7 @@ static int serveCgi(NetSock* sock, char* url, char* buf)
   char* ptr;
   int i;
   int j;
+  bool first;
   Sensor* s = sensorData;
   char addr[30];
 
@@ -107,14 +108,16 @@ static int serveCgi(NetSock* sock, char* url, char* buf)
       if (j < 0)
         j = 0;
 
+      first = true;
       for (;j < s->tempCount; j++) {
 
-        if (j) {
- 
-          *ptr = ',';
-          ++ptr;
-        }
+        if (!first) {
 
+           *ptr = ',';
+           ++ptr;
+         }
+
+        first = false;
         nosSPrintf(ptr, "%d.%d", T2I(s->temps[j]), T2D(s->temps[j]));
         ptr += strlen(ptr);
       }
