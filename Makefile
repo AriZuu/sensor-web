@@ -30,7 +30,7 @@
 RELROOT = ../picoos/
 
 PORT ?= lpc2xxx
-BUILD = DEBUG
+BUILD ?= DEBUG
 #THUMB=yes
 
 ifeq '$(PORT)' 'lpc2xxx'
