@@ -32,6 +32,7 @@
  * uIP settings (see Contiki/uIP documentation).
  */
 
+#define UIP_CONF_LLH_LEN 14
 #define UIP_CONF_MAX_CONNECTIONS 4
 #define UIP_CONF_MAX_LISTENPORTS 2
 
