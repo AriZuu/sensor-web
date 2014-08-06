@@ -51,21 +51,6 @@ static struct uip_eth_addr ethaddr = {
 
 };
 
-static int acceptHook(NetSock* sock, int lport)
-{
-  POSTASK_t task;
-
-  task = posTaskCreate(lport == 80 ? httpdTask : shellTask, (void*)sock, 2, 1100);
-  if (task == NULL) {
-
-    nosPrint("net: out of tasks.");
-    return -1;
-  }
-
-  POS_SETTASKNAME(task, lport == 80 ? "httpd" : "shell");
-  return 0;
-}
-
 void initNetwork()
 {
   nosPrint("Starting network.\n");
@@ -114,9 +99,5 @@ void initNetwork()
 #endif /* UIP_CONF_IPV6 */
 
   netInit();
-  netSockAcceptHookSet(acceptHook);
-
-  uip_listen(uip_htons(80));
-  uip_listen(uip_htons(23));
 }
 

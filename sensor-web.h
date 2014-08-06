@@ -83,8 +83,12 @@ extern Sensor sensorData[MAX_TEMP];
 extern POSMUTEX_t sensorMutex;
 
 void httpdTask(void* arg);
+void httpClientTask(void* arg);
 void shellTask(void* arg);
+void shellSessionTask(void* arg);
 void sensorTask(void);
 void initNetwork(void);
+void initShell(void);
+void initHttpd(void);
 void initSensors(void);
 void sensorAddressStr(char* buf, Sensor* sensor);

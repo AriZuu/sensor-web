@@ -48,8 +48,11 @@ static void mainTask(void *arg)
   f_mount(0, &fs);
 #endif
 
-  initSensors();
   initNetwork();
+  initSensors();
+  initHttpd();
+  initShell();
+
   sensorTask();
 }
 

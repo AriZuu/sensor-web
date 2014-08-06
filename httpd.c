@@ -31,6 +31,7 @@
 #include <picoos.h>
 #include <picoos-net.h>
 #include "sensor-web.h"
+#include "sys/socket.h"
 
 //#define USE_FAT
 #ifdef USE_FAT
@@ -383,7 +384,7 @@ static int http(NetSock* sock)
   return 0;
 }
 
-void httpdTask(void* arg)
+void httpClientTask(void* arg)
 {
   NetSock* sock = (NetSock*) arg;
   int bytes;
@@ -392,3 +393,59 @@ void httpdTask(void* arg)
   netSockClose(sock);
   // nosPrintf("http done, %d bytes\n", bytes);
 }
+
+void httpdTask(void* arg)
+{
+  int lsn;
+  socklen_t addrlen;
+
+#if UIP_CONF_IPV6
+
+  struct sockaddr_in6 me;
+  struct sockaddr_in6 peer;
+
+  me.sin6_family = AF_INET6;
+  me.sin6_addr = in6addr_any;
+  me.sin6_port = htons(80);
+
+#else
+
+  struct sockaddr_in me;
+  struct sockaddr_in peer;
+
+  me.sin_family = AF_INET;
+  me.sin_addr.s_addr = INADDR_ANY;
+  me.sin_port = htons(80);
+
+#endif
+
+  lsn = socket(AF_INET, SOCK_STREAM, 0);
+  
+  bind(lsn, (struct sockaddr*)&me, sizeof(me));
+  listen(lsn, 5);
+
+  while (true) {
+
+    int s = accept(lsn, (struct sockaddr*)&peer, &addrlen);
+    POSTASK_t task;
+
+    task = posTaskCreate(httpClientTask, (void*)net_connection(s), 2, 1100);
+    if (task == NULL) {
+
+#if NOSCFG_FEATURE_CONOUT == 1
+      nosPrint("net: out of tasks.");
+#endif
+      closesocket(s);
+    }
+
+    POS_SETTASKNAME(task, "httpc");
+  }
+}
+void initHttpd()
+{
+  POSTASK_t task;
+
+  task = posTaskCreate(httpdTask, NULL, 2, 600);
+  POS_SETTASKNAME(task, "httpd");
+}
+

@@ -45,13 +45,15 @@
 
 #define UIP_CONF_STATISTICS       1
 #define UIP_CONF_LOGGING          1
-#define UIP_CONF_IPV6 		  1
+#define UIP_CONF_IPV6 		  0
 #define UIP_CONF_ROUTER 	  0
 
 /*
  * Socket layer settings.
  */
 #define NETCFG_SOCKETS 1
+#define NETCFG_BSD_SOCKETS 1
+#define NETCFG_COMPAT_SOCKETS 1
 #define NETCFG_TELNETD 1
 
 /*

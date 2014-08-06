@@ -30,6 +30,7 @@
 
 #include <picoos.h>
 #include <picoos-net.h>
+#include "sys/socket.h"
 
 #ifndef unix
 #include "lpc_reg.h"
@@ -154,7 +155,7 @@ static void osStats(NetTelnet* t, char* buf)
 }
 #endif
 
-void shellTask(void* arg)
+void shellSessionTask(void* arg)
 {
   NetTelnet tel;
   NetSock* sock = (NetSock*) arg;
@@ -202,5 +203,60 @@ void shellTask(void* arg)
 #endif
 
   netSockClose(sock);
+}
+
+void shellTask(void* arg)
+{
+  int lsn;
+  socklen_t addrlen;
+
+#if UIP_CONF_IPV6
+
+  struct sockaddr_in6 me;
+  struct sockaddr_in6 peer;
+
+  me.sin6_family = AF_INET6;
+  me.sin6_addr = in6addr_any;
+  me.sin6_port = htons(23);
+
+#else
+
+  struct sockaddr_in me;
+  struct sockaddr_in peer;
+
+  me.sin_family = AF_INET;
+  me.sin_addr.s_addr = INADDR_ANY;
+  me.sin_port = htons(23);
+
+#endif
+
+  lsn = socket(AF_INET, SOCK_STREAM, 0);
+  
+  bind(lsn, (struct sockaddr*)&me, sizeof(me));
+  listen(lsn, 5);
+
+  while (true) {
+
+    int s = accept(lsn, (struct sockaddr*)&peer, &addrlen);
+    POSTASK_t task;
+
+    task = posTaskCreate(shellSessionTask, (void*)net_connection(s), 2, 1100);
+    if (task == NULL) {
+
+#if NOSCFG_FEATURE_CONOUT == 1
+      nosPrint("net: out of tasks.");
+#endif
+      closesocket(s);
+    }
+
+    POS_SETTASKNAME(task, "sess");
+  }
+}
+void initShell()
+{
+  POSTASK_t task;
+
+  task = posTaskCreate(shellTask, NULL, 2, 600);
+  POS_SETTASKNAME(task, "shell");
 }
 
