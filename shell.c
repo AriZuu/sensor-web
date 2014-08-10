@@ -242,6 +242,9 @@ void shellTask(void* arg)
   while (true) {
 
     int s = accept(lsn, (struct sockaddr*)&peer, &addrlen);
+    if (s == -1)
+      continue;
+
     POSTASK_t task;
 
     task = posTaskCreate(shellSessionTask, (void*)s, 2, 1100);
@@ -260,7 +263,7 @@ void initShell()
 {
   POSTASK_t task;
 
-  task = posTaskCreate(shellTask, NULL, 2, 600);
+  task = posTaskCreate(shellTask, NULL, 2, 400);
   POS_SETTASKNAME(task, "shell");
 }
 

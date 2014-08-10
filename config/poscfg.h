@@ -86,8 +86,8 @@
  * dynamically allocate memory for additional task structures if the volume
  * of tasks defined by ::POSCFG_MAX_TASKS is exhausted.
  */
-// idle, main, sensors, net and 4 sockets
-#define SOCK_COUNT (4+1)
+// idle, main, sensors, net and 4 sockets and 2 listen socks.
+#define SOCK_COUNT (2+1+2)
 #define POSCFG_MAX_TASKS       (SOCK_COUNT + 4)
 
 /** Maximum count of events.
@@ -106,7 +106,7 @@
 // bsd sock: 1 mutex
 // start net: 2, sensors:2, 2 sockets = 2*3 = 6, conio 2 -> 12
 
-#define POSCFG_MAX_EVENTS       (8 + SOCK_COUNT * 3)
+#define POSCFG_MAX_EVENTS       (7 + SOCK_COUNT * 3)
 
 /** Maximum count of message buffers.
  * This definition sets the maximum count of message buffers that can be

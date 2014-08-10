@@ -432,6 +432,10 @@ void httpdTask(void* arg)
   while (true) {
 
     int s = accept(lsn, (struct sockaddr*)&peer, &addrlen);
+
+    if (s == -1)
+      continue;
+
     POSTASK_t task;
 
     task = posTaskCreate(httpClientTask, (void*)s, 2, 1100);
@@ -450,7 +454,7 @@ void initHttpd()
 {
   POSTASK_t task;
 
-  task = posTaskCreate(httpdTask, NULL, 2, 600);
+  task = posTaskCreate(httpdTask, NULL, 2, 400);
   POS_SETTASKNAME(task, "httpd");
 }
 
