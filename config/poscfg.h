@@ -87,7 +87,7 @@
  * of tasks defined by ::POSCFG_MAX_TASKS is exhausted.
  */
 // idle, main, sensors, net and 4 sockets and 2 listen socks.
-#define SOCK_COUNT (3+1+2)
+#define SOCK_COUNT (4+1+2)
 #define POSCFG_MAX_TASKS       (SOCK_COUNT + 4)
 
 /** Maximum count of events.

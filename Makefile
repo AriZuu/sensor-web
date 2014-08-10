@@ -31,7 +31,7 @@ RELROOT = ../picoos/
 
 PORT ?= lpc2xxx
 BUILD ?= DEBUG
-#THUMB=yes
+THUMB=yes
 
 ifeq '$(PORT)' 'lpc2xxx'
 LD_SCRIPTS=lpc2129-nova.ld
