@@ -284,5 +284,5 @@ void initSensors()
 
   memset(sensorData, '\0', sizeof(sensorData));
   LED_IOSET = LED_RED | LED_GREEN | LED_YELLOW;
-  LED_IODIR = LED_RED | LED_GREEN | LED_YELLOW;
+  LED_IODIR |= LED_RED | LED_GREEN | LED_YELLOW;
 }
