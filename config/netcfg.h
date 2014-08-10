@@ -45,7 +45,7 @@
 
 #define UIP_CONF_STATISTICS       1
 #define UIP_CONF_LOGGING          1
-#define UIP_CONF_IPV6 		  0
+#define UIP_CONF_IPV6 		  1
 #define UIP_CONF_ROUTER 	  0
 
 /*

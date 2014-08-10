@@ -394,6 +394,10 @@ void httpClientTask(void* arg)
   // nosPrintf("http done, %d bytes\n", bytes);
 }
 
+#if UIP_CONF_IPV6
+static struct in6_addr in6addr_any = IN6ADDR_ANY_INIT;
+#endif
+
 void httpdTask(void* arg)
 {
   int lsn;

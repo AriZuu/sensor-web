@@ -158,7 +158,7 @@ static void osStats(NetTelnet* t, char* buf)
 void shellSessionTask(void* arg)
 {
   NetTelnet tel;
-  NetSock* sock = (NetSock*) arg;
+  int sock = (intptr_t) arg;
   int i;
   bool go = true;
   static char buf[512];
@@ -202,8 +202,12 @@ void shellSessionTask(void* arg)
   LED_IOSET = LED_GREEN;
 #endif
 
-  netSockClose(sock);
+  closesocket(sock);
 }
+
+#if UIP_CONF_IPV6
+static struct in6_addr in6addr_any = IN6ADDR_ANY_INIT;
+#endif
 
 void shellTask(void* arg)
 {

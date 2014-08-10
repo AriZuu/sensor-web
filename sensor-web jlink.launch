@@ -5,7 +5,7 @@
 <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.doReset" value="false"/>
 <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.imageFileName" value=""/>
 <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.imageOffset" value=""/>
-<stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.initCommands" value="monitor flash download = 1&#13;&#10;monitor reset 9&#13;&#10;load bin/lpc2xxx-deb/out/sensor-web.elf&#13;&#10;monitor reg pc = 0&#13;&#10;monitor reg cpsr = 0xD3&#13;&#10;"/>
+<stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.initCommands" value="monitor flash download = 1&#13;&#10;monitor reset 9&#13;&#10;load bin/lpc2xxx-deb/out/sensor-web.elf&#13;&#10;monitor long 0xE01FC040 = 0x00000001&#13;&#10;monitor reg pc = 0&#13;&#10;monitor reg cpsr = 0xD3&#13;&#10;"/>
 <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.ipAddress" value="localhost"/>
 <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.jtagDevice" value="Generic TCP/IP"/>
 <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.loadImage" value="false"/>
