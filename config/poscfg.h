@@ -60,7 +60,7 @@
  * For the round robin scheduler, the maximum count is equal to ::MVAR_BITS.
  * For the standard scheduler, the maximum count cannot exceed ::MVAR_BITS ^ 2.
  */
-#define POSCFG_MAX_PRIO_LEVEL   32
+#define POSCFG_MAX_PRIO_LEVEL   12
 
 /** Maximum number of allowed tasks per priority level.
  * If the standard scheduler is used, this define automatically
