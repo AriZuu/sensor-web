@@ -386,11 +386,12 @@ static int http(NetSock* sock)
 
 void httpClientTask(void* arg)
 {
-  NetSock* sock = (NetSock*) arg;
+  int sockfd = (intptr_t)arg;
+  NetSock* sock = net_connection(sockfd);
   int bytes;
 
   bytes = http(sock);
-  netSockClose(sock);
+  closesocket(sockfd);
   // nosPrintf("http done, %d bytes\n", bytes);
 }
 
@@ -433,7 +434,7 @@ void httpdTask(void* arg)
     int s = accept(lsn, (struct sockaddr*)&peer, &addrlen);
     POSTASK_t task;
 
-    task = posTaskCreate(httpClientTask, (void*)net_connection(s), 2, 1100);
+    task = posTaskCreate(httpClientTask, (void*)s, 2, 1100);
     if (task == NULL) {
 
 #if NOSCFG_FEATURE_CONOUT == 1
