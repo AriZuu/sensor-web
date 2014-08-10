@@ -59,7 +59,7 @@ static void mainTask(void *arg)
 int main(int argc, char **argv)
 {
   uosInit();
-  nosInit(mainTask, NULL, 10, 600, 200);
+  nosInit(mainTask, NULL, 5, 600, 200);
   return 0;
 }
 

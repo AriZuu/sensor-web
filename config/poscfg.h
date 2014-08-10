@@ -48,6 +48,8 @@
 
 #include "netcfg.h"
 
+// idle, main, sensors, net and 4 sockets and 2 listen socks.
+#define SOCK_COUNT (UIP_CONF_MAX_CONNECTIONS + UIP_CONF_MAX_LISTENPORTS + UIP_CONF_UDP_CONNS)
 /*---------------------------------------------------------------------------
  *  OS CORE SETTINGS
  *-------------------------------------------------------------------------*/
@@ -62,7 +64,7 @@
  * For the round robin scheduler, the maximum count is equal to ::MVAR_BITS.
  * For the standard scheduler, the maximum count cannot exceed ::MVAR_BITS ^ 2.
  */
-#define POSCFG_MAX_PRIO_LEVEL   12
+#define POSCFG_MAX_PRIO_LEVEL   6
 
 /** Maximum number of allowed tasks per priority level.
  * If the standard scheduler is used, this define automatically
@@ -73,7 +75,11 @@
  * The value for this definition must be a power of two and can
  * not exceed the count of bits set by ::MVAR_BITS.
  */
-#define POSCFG_TASKS_PER_PRIO   8 
+#if SOCK_COUNT > 4
+#define POSCFG_TASKS_PER_PRIO   SOCK_COUNT 
+#else
+#define POSCFG_TASKS_PER_PRIO   4
+#endif
 
 /** Maximum count of tasks.
  * This define sets the maximum count of task data structures which can be
@@ -88,8 +94,6 @@
  * dynamically allocate memory for additional task structures if the volume
  * of tasks defined by ::POSCFG_MAX_TASKS is exhausted.
  */
-// idle, main, sensors, net and 4 sockets and 2 listen socks.
-#define SOCK_COUNT (UIP_CONF_MAX_CONNECTIONS + UIP_CONF_MAX_LISTENPORTS + UIP_CONF_UDP_CONNS)
 #define POSCFG_MAX_TASKS       (SOCK_COUNT + 4)
 
 /** Maximum count of events.
