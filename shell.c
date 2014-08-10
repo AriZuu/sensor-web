@@ -202,7 +202,6 @@ void shellSessionTask(void* arg)
   LED_IOSET = LED_GREEN;
 #endif
 
-  uosResourceDiag();
   closesocket(sock);
 }
 

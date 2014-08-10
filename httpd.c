@@ -392,7 +392,6 @@ void httpClientTask(void* arg)
 
   bytes = http(sock);
   closesocket(sockfd);
-  uosResourceDiag();
 
   // nosPrintf("http done, %d bytes\n", bytes);
 }

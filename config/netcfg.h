@@ -28,12 +28,18 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#ifndef _NETCFG_H
+#define _NETCFG_H
 /*
  * uIP settings (see Contiki/uIP documentation).
  */
 
 #define UIP_CONF_LLH_LEN 14
+#ifdef unix
+#define UIP_CONF_MAX_CONNECTIONS 10
+#else
 #define UIP_CONF_MAX_CONNECTIONS 4
+#endif
 #define UIP_CONF_MAX_LISTENPORTS 2
 
 // this gives default tcp mtu, 536 bytes
@@ -45,7 +51,7 @@
 
 #define UIP_CONF_STATISTICS       1
 #define UIP_CONF_LOGGING          1
-#define UIP_CONF_IPV6 		  1
+#define UIP_CONF_IPV6 		  0
 #define UIP_CONF_ROUTER 	  0
 
 /*
@@ -66,3 +72,4 @@
 #define NETCFG_DRIVER_CS8900A 2
 #endif
 
+#endif

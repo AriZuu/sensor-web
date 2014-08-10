@@ -46,6 +46,8 @@
 #define _POSCFG_H
 
 
+#include "netcfg.h"
+
 /*---------------------------------------------------------------------------
  *  OS CORE SETTINGS
  *-------------------------------------------------------------------------*/
@@ -87,7 +89,7 @@
  * of tasks defined by ::POSCFG_MAX_TASKS is exhausted.
  */
 // idle, main, sensors, net and 4 sockets and 2 listen socks.
-#define SOCK_COUNT (4+1+2)
+#define SOCK_COUNT (UIP_CONF_MAX_CONNECTIONS + UIP_CONF_MAX_LISTENPORTS + UIP_CONF_UDP_CONNS)
 #define POSCFG_MAX_TASKS       (SOCK_COUNT + 4)
 
 /** Maximum count of events.
