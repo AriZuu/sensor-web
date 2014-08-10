@@ -244,7 +244,7 @@ void shellTask(void* arg)
     int s = accept(lsn, (struct sockaddr*)&peer, &addrlen);
     POSTASK_t task;
 
-    task = posTaskCreate(shellSessionTask, (void*)net_connection(s), 2, 1100);
+    task = posTaskCreate(shellSessionTask, (void*)s, 2, 1100);
     if (task == NULL) {
 
 #if NOSCFG_FEATURE_CONOUT == 1
