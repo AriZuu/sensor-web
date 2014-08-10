@@ -392,6 +392,8 @@ void httpClientTask(void* arg)
 
   bytes = http(sock);
   closesocket(sockfd);
+  uosResourceDiag();
+
   // nosPrintf("http done, %d bytes\n", bytes);
 }
 
@@ -438,7 +440,7 @@ void httpdTask(void* arg)
 
     POSTASK_t task;
 
-    task = posTaskCreate(httpClientTask, (void*)s, 2, 1100);
+    task = posTaskCreate(httpClientTask, (void*)s, 2, 1020);
     if (task == NULL) {
 
 #if NOSCFG_FEATURE_CONOUT == 1
@@ -454,7 +456,7 @@ void initHttpd()
 {
   POSTASK_t task;
 
-  task = posTaskCreate(httpdTask, NULL, 2, 400);
+  task = posTaskCreate(httpdTask, NULL, 2, 300);
   POS_SETTASKNAME(task, "httpd");
 }
 

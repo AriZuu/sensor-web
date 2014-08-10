@@ -34,7 +34,7 @@
 
 #define UIP_CONF_LLH_LEN 14
 #define UIP_CONF_MAX_CONNECTIONS 2
-#define UIP_CONF_MAX_LISTENPORTS 2
+#define UIP_CONF_MAX_LISTENPORTS 3
 
 // this gives default tcp mtu, 536 bytes
 #define UIP_CONF_BUFFER_SIZE     590

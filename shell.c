@@ -202,6 +202,7 @@ void shellSessionTask(void* arg)
   LED_IOSET = LED_GREEN;
 #endif
 
+  uosResourceDiag();
   closesocket(sock);
 }
 
@@ -247,7 +248,7 @@ void shellTask(void* arg)
 
     POSTASK_t task;
 
-    task = posTaskCreate(shellSessionTask, (void*)s, 2, 1100);
+    task = posTaskCreate(shellSessionTask, (void*)s, 2, 700);
     if (task == NULL) {
 
 #if NOSCFG_FEATURE_CONOUT == 1
@@ -263,7 +264,7 @@ void initShell()
 {
   POSTASK_t task;
 
-  task = posTaskCreate(shellTask, NULL, 2, 400);
+  task = posTaskCreate(shellTask, NULL, 2, 300);
   POS_SETTASKNAME(task, "shell");
 }
 
