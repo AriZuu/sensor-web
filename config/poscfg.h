@@ -75,10 +75,10 @@
  * The value for this definition must be a power of two and can
  * not exceed the count of bits set by ::MVAR_BITS.
  */
-#if SOCK_COUNT > 4
-#define POSCFG_TASKS_PER_PRIO   SOCK_COUNT 
+#if SOCK_COUNT >=8
+#define POSCFG_TASKS_PER_PRIO   16
 #else
-#define POSCFG_TASKS_PER_PRIO   4
+#define POSCFG_TASKS_PER_PRIO   8
 #endif
 
 /** Maximum count of tasks.
