@@ -247,7 +247,7 @@ void shellTask(void* arg)
 
     POSTASK_t task;
 
-    task = posTaskCreate(shellSessionTask, (void*)s, 1, 700);
+    task = posTaskCreate(shellSessionTask, (void*)(intptr_t)s, 1, 700);
     if (task == NULL) {
 
 #if NOSCFG_FEATURE_CONOUT == 1
