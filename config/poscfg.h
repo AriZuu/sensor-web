@@ -75,8 +75,8 @@
  * The value for this definition must be a power of two and can
  * not exceed the count of bits set by ::MVAR_BITS.
  */
-#if SOCK_COUNT >=8
-#define POSCFG_TASKS_PER_PRIO   16
+#ifdef unix
+#define POSCFG_TASKS_PER_PRIO   32
 #else
 #define POSCFG_TASKS_PER_PRIO   8
 #endif

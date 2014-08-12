@@ -36,7 +36,7 @@
 
 #define UIP_CONF_LLH_LEN 14
 #ifdef unix
-#define UIP_CONF_MAX_CONNECTIONS 10
+#define UIP_CONF_MAX_CONNECTIONS 32
 #else
 #define UIP_CONF_MAX_CONNECTIONS 4
 #endif
