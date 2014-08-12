@@ -439,7 +439,7 @@ void httpdTask(void* arg)
 
     POSTASK_t task;
 
-    task = posTaskCreate(httpClientTask, (void*)s, 1, 1100);
+    task = posTaskCreate(httpClientTask, (void*)(intptr_t)s, 1, 1100);
     if (task == NULL) {
 
 #if NOSCFG_FEATURE_CONOUT == 1
