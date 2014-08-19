@@ -140,9 +140,9 @@ void sensorTask()
 #endif
 
 #ifdef VARASTO
-  sensorSock = netSockUdpCreate(&ipaddr, 700);
+  sensorSock = netSockCreateUDP(&ipaddr, 700);
 #else
-  sensorSock = netSockUdpCreate(&ipaddr, 701);
+  sensorSock = netSockCreateUDP(&ipaddr, 701);
 #endif
 
   posTaskSleep(MS(1000));
@@ -231,7 +231,13 @@ void sensorTask()
         if (sens->temp > 35)
            sens->temp = 16 - 2.5 * s;
 #else
-        ReadTemperature(0, sens->serialNum, &sens->temp);
+
+        float value;
+
+        posMutexUnlock(sensorMutex);
+        ReadTemperature(0, sens->serialNum, &value);
+        posMutexLock(sensorMutex);
+        sens->temp = value;
 #endif
 #if 1
         nosPrintf(" Temp=%d.%d oC\n", (int)sens->temp, (int)(sens->temp * 10) % 10);

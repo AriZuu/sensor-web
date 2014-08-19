@@ -35,11 +35,15 @@
  */
 
 #define UIP_CONF_LLH_LEN 14
+
 #ifdef unix
-#define UIP_CONF_MAX_CONNECTIONS 32
+#define UIP_CONF_MAX_CONNECTIONS  32
+#define UIP_CONF_IPV6 		  0
 #else
-#define UIP_CONF_MAX_CONNECTIONS 4
+#define UIP_CONF_MAX_CONNECTIONS  4
+#define UIP_CONF_IPV6 		  1
 #endif
+
 #define UIP_CONF_MAX_LISTENPORTS 2
 
 // this gives default tcp mtu, 536 bytes
@@ -51,7 +55,6 @@
 
 #define UIP_CONF_STATISTICS       1
 #define UIP_CONF_LOGGING          1
-#define UIP_CONF_IPV6 		  1
 #define UIP_CONF_ROUTER 	  0
 
 /*

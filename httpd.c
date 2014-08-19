@@ -387,7 +387,7 @@ static int http(NetSock* sock)
 void httpClientTask(void* arg)
 {
   int sockfd = (intptr_t)arg;
-  NetSock* sock = net_connection(sockfd);
+  NetSock* sock = netSockConnection(sockfd);
   int bytes;
 
   bytes = http(sock);
