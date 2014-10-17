@@ -54,10 +54,6 @@ endif
 
 CDEFINES += SMALL_MEMORY_TARGET
 
-DIR_USRINC +=	../picoos-micro ../picoos-ow \
-		../picoos-micro/fat/src ../picoos-net \
-		../OneWire/common
-
 ifeq '$(PORT)' 'unix'
 DIR_USRINC +=	../OneWire/lib/userial 
 endif
