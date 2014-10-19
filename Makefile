@@ -37,7 +37,7 @@ BUILD ?= DEBUG
 ifeq '$(BOARD)' 'LPC-E2129'
 PORT = lpc2xxx
 THUMB=yes
-LD_SCRIPTS=lpc2129-nova.ld
+LD_SCRIPTS=board/olimex-lpc-e2129/lpc2129-nova.ld
 endif
 
 ifeq '$(BOARD)' 'UNIX'

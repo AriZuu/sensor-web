@@ -75,7 +75,11 @@
  * The value for this definition must be a power of two and can
  * not exceed the count of bits set by ::MVAR_BITS.
  */
+#if UIP_CONF_MAX_CONNECTIONS > 4
 #define POSCFG_TASKS_PER_PRIO   32
+#else
+#define POSCFG_TASKS_PER_PRIO   8
+#endif
 
 /** Maximum count of tasks.
  * This define sets the maximum count of task data structures which can be

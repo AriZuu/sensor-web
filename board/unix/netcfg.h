@@ -34,32 +34,9 @@
  * uIP settings (see Contiki/uIP documentation).
  */
 
-#define UIP_CONF_LLH_LEN 14
-
 #define UIP_CONF_IPV6       0
-#define UIP_CONF_LOGGING          1
 #define NETCFG_DRIVER_TAP 2
-#define UIP_CONF_MAX_CONNECTIONS  32
 
-#define UIP_CONF_MAX_LISTENPORTS 2
-#define UIP_CONF_BROADCAST  1
-
-// this gives default tcp mtu, 536 bytes
-#define UIP_CONF_BUFFER_SIZE     590
-
-#define UIP_CONF_UDP              1
-#define UIP_CONF_UDP_CHECKSUMS    1
-#define UIP_CONF_UDP_CONNS        1
-
-#define UIP_CONF_STATISTICS       1
-#define UIP_CONF_ROUTER 	  0
-
-/*
- * Socket layer settings.
- */
-#define NETCFG_SOCKETS 1
-#define NETCFG_BSD_SOCKETS 1
-#define NETCFG_COMPAT_SOCKETS 1
-#define NETCFG_TELNETD 1
+#include "netcfg_common.h"
 
 #endif
