@@ -349,4 +349,8 @@ extern void *__heap_end;
 //#define NOSCFG_FEATURE_TIMER 1
 
 #define NOSCFG_FEATURE_USE_STDARG 1
+
+// launchpad
+#define PORTCFG_CONOUT_ITM 0
+#define PORTCFG_CON_USART UART0_BASE
 #endif /* _NOSCFG_H */

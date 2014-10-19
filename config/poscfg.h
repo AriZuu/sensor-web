@@ -557,4 +557,9 @@
 #endif
 
 #define PORTCFG_IRQ_STACK_SIZE 1024
+
+// cortex-m
+#define PORTCFG_VECTORS 1
+#define PORTCFG_TICK_SYSTICK 1
+
 #endif /* _POSCFG_H */

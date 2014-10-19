@@ -27,9 +27,9 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 # OF THE POSSIBILITY OF SUCH DAMAGE.
 
-BOARD ?=LPC-E2129
+#BOARD ?=LPC-E2129
 #BOARD=UNIX
-#BOARD=TI-LAUNCHPAD
+BOARD=TI-LAUNCHPAD
 
 RELROOT = ../picoos/
 BUILD ?= DEBUG
@@ -40,9 +40,17 @@ THUMB=yes
 LD_SCRIPTS=board/olimex-lpc-e2129/lpc2129-nova.ld
 endif
 
+ifeq '$(BOARD)' 'TI-LAUNCHPAD'
+PORT = cortex-m
+CPU = tm4c
+CORTEX = m4
+export CORTEX
+
+LD_SCRIPTS=board/ti-launchpad/tiva.ld
+endif
+
 ifeq '$(BOARD)' 'UNIX'
 PORT = unix
-BOARDFILES=board/unix/board.c
 endif
 
 include $(RELROOT)make/common.mak
@@ -50,6 +58,18 @@ include $(RELROOT)make/common.mak
 ifeq '$(BOARD)' 'LPC-E2129'
 BOARDFILES=board/olimex-lpc-e2129/board.c
 DIR_CONFIG = $(CURRENTDIR)/board/olimex-lpc-e2129
+endif
+
+ifeq '$(BOARD)' 'TI-LAUNCHPAD'
+BOARDFILES=board/ti-launchpad/board.c board/ti-launchpad/startup.c
+DIR_CONFIG = $(CURRENTDIR)/board/ti-launchpad
+# CMSIS setup
+CMSIS_INCLUDES=$(CURRENTDIR)/../cmsis-ports/tiva/tivaware $(CURRENTDIR)/../cmsis-ports/tiva/inc 
+CMSIS_DEFINES=TM4C1294NCPDT PART_TM4C1294NCPDT  gcc
+export CMSIS_DEFINES
+export CMSIS_INCLUDES
+POSTLINK2 = arm-none-eabi-objcopy -O binary $(TARGETOUT) net.bin
+MODULES += ../cmsis-ports/tiva
 endif
 
 ifeq '$(BOARD)' 'UNIX'
