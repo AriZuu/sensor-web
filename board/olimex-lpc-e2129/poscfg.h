@@ -75,7 +75,7 @@
  * The value for this definition must be a power of two and can
  * not exceed the count of bits set by ::MVAR_BITS.
  */
-#define POSCFG_TASKS_PER_PRIO   32
+#define POSCFG_TASKS_PER_PRIO   8
 
 /** Maximum count of tasks.
  * This define sets the maximum count of task data structures which can be
@@ -257,11 +257,7 @@
  * This define must be set to the tickrate of the timer
  * interrupt (= timer ticks per second).
  */
-#ifdef unix
-#define HZ                   100  /* timer ticks per second */
-#else
 #define HZ                   1000  /* timer ticks per second */
-#endif
 
 /**
  * Defines the crystal clock in HZ
@@ -547,10 +543,6 @@
 /*---------------------------------------------------------------------------
  *  ADDITIONAL USER SETTINGS FOR THE ARM PORT
  *-------------------------------------------------------------------------*/
-
-#ifdef unix
-#define PORTCFG_MIN_STACK_SIZE	65535
-#endif
 
 #define PORTCFG_IRQ_STACK_SIZE 1024
 #endif /* _POSCFG_H */

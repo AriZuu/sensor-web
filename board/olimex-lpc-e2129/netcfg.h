@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2013, Ari Suutari <ari@stonepile.fi>.
- * All rights reserved. 
- * 
+ * Copyright (c) 2012-2013, Ari Suutari <ari@stonepile.fi>.
+ * All rights reserved.
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- * 
+ *
  *  1. Redistributions of source code must retain the above copyright
  *     notice, this list of conditions and the following disclaimer.
  *  2. Redistributions in binary form must reproduce the above copyright
@@ -13,8 +13,8 @@
  *     documentation and/or other materials provided with the distribution.
  *  3. The name of the author may not be used to endorse or promote
  *     products derived from this software without specific prior written
- *     permission. 
- * 
+ *     permission.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS
  * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -28,9 +28,37 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#define OW_BIT (1<<24)
+#ifndef _NETCFG_H
+#define _NETCFG_H
+/*
+ * uIP settings (see Contiki/uIP documentation).
+ */
 
-#define OWCFG_READ_IN()   ((GPIO0_IOPIN & OW_BIT) ? 1 : 0 )
-#define OWCFG_OUT_LOW()   GPIO0_IOCLR = OW_BIT; GPIO0_IODIR |= OW_BIT
-#define OWCFG_OUT_HIGH()  GPIO0_IOSET = OW_BIT; GPIO0_IODIR |= OW_BIT
-#define OWCFG_DIR_IN()    GPIO0_IODIR &= ~(OW_BIT)
+#define UIP_CONF_LLH_LEN 14
+
+#define UIP_CONF_IPV6       1
+#define UIP_CONF_LOGGING          0
+#define NETCFG_DRIVER_CS8900A 2
+#define UIP_CONF_MAX_CONNECTIONS  4
+#define UIP_CONF_MAX_LISTENPORTS 2
+#define UIP_CONF_BROADCAST  1
+
+// this gives default tcp mtu, 536 bytes
+#define UIP_CONF_BUFFER_SIZE     590
+
+#define UIP_CONF_UDP              1
+#define UIP_CONF_UDP_CHECKSUMS    1
+#define UIP_CONF_UDP_CONNS        1
+
+#define UIP_CONF_STATISTICS       1
+#define UIP_CONF_ROUTER 	  0
+
+/*
+ * Socket layer settings.
+ */
+#define NETCFG_SOCKETS 1
+#define NETCFG_BSD_SOCKETS 1
+#define NETCFG_COMPAT_SOCKETS 1
+#define NETCFG_TELNETD 1
+
+#endif

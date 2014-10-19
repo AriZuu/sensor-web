@@ -38,13 +38,16 @@ ifeq '$(BOARD)' 'LPC-E2129'
 PORT = lpc2xxx
 THUMB=yes
 LD_SCRIPTS=lpc2129-nova.ld
-BOARDFILE=board-olimex-lpce2129.c
+BOARDFILES=board/olimex-lpc-e2129/board.c
+DIR_CONFIG = $(CURRENTDIR)/board/olimex-lpc-e2129
 CDEFINES += LPC_E2129
 endif
 
 ifeq '$(BOARD)' 'UNIX'
 PORT = unix
-BOARDFILE=board-unix.c
+BOARDFILES=board/unix/board.c
+CDEFINES += NO_ONEWIRE
+DIR_CONFIG = $(CURRENTDIR)/board/unix
 endif
 
 include $(RELROOT)make/common.mak
@@ -52,19 +55,15 @@ include $(RELROOT)make/common.mak
 NANO = 1
 TARGET = sensor-web
 SRC_TXT =	sensor-web.c \
-		sensors.c net.c  shell.c httpd.c webfiles.c $(BOARDFILE)
+		sensors.c net.c  shell.c httpd.c webfiles.c $(BOARDFILES)
 
 SRC_HDR = 
 SRC_OBJ =
 SRC_LIB =
 
-ifeq '$(PORT)' 'unix'
-CDEFINES += NO_ONEWIRE
-endif
-
 CDEFINES += SMALL_MEMORY_TARGET
 
-DIR_CONFIG = $(CURRENTDIR)/config
+DIR_CONFIG += $(CURRENTDIR)/config
 DIR_OUTPUT = $(CURRENTDIR)/bin
 ifneq '$(PORT)' 'unix'
 MODULES += ../picoos-ow
