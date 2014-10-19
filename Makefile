@@ -38,19 +38,25 @@ ifeq '$(BOARD)' 'LPC-E2129'
 PORT = lpc2xxx
 THUMB=yes
 LD_SCRIPTS=lpc2129-nova.ld
-BOARDFILES=board/olimex-lpc-e2129/board.c
-DIR_CONFIG = $(CURRENTDIR)/board/olimex-lpc-e2129
-CDEFINES += LPC_E2129
 endif
 
 ifeq '$(BOARD)' 'UNIX'
 PORT = unix
 BOARDFILES=board/unix/board.c
-CDEFINES += NO_ONEWIRE
-DIR_CONFIG = $(CURRENTDIR)/board/unix
 endif
 
 include $(RELROOT)make/common.mak
+
+ifeq '$(BOARD)' 'LPC-E2129'
+BOARDFILES=board/olimex-lpc-e2129/board.c
+DIR_CONFIG = $(CURRENTDIR)/board/olimex-lpc-e2129
+endif
+
+ifeq '$(BOARD)' 'UNIX'
+BOARDFILES=board/unix/board.c
+CDEFINES += NO_ONEWIRE
+DIR_CONFIG = $(CURRENTDIR)/board/unix
+endif
 
 NANO = 1
 TARGET = sensor-web
