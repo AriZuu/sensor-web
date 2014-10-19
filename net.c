@@ -31,6 +31,7 @@
 #include <picoos.h>
 #include <picoos-net.h>
 #include "sensor-web.h"
+#include "net/dhcpc.h"
 
 static struct uip_eth_addr ethaddr = {
 
@@ -51,53 +52,56 @@ static struct uip_eth_addr ethaddr = {
 
 };
 
+void dhcpc_configured(const struct dhcpc_state *s)
+{
+  nosPrintf("Got IP address %d.%d.%d.%d\n", uip_ipaddr_to_quad(&s->ipaddr));
+  nosPrintf("Got netmask %d.%d.%d.%d\n", uip_ipaddr_to_quad(&s->netmask));
+  nosPrintf("Got DNS server %d.%d.%d.%d\n", uip_ipaddr_to_quad(&s->dnsaddr));
+  nosPrintf("Got default router %d.%d.%d.%d\n", uip_ipaddr_to_quad(&s->default_router));
+  nosPrintf("Lease expires in %ld seconds\n", uip_ntohs(s->lease_time[0])*65536ul + uip_ntohs(s->lease_time[1]));
+
+  uip_sethostaddr(&s->ipaddr);
+  uip_setnetmask(&s->netmask);
+  uip_setdraddr(&s->default_router);
+}
+
+void dhcpc_unconfigured(const struct dhcpc_state *s)
+{
+  nosPrintf("DHCP lease lost.\n");
+  uip_ipaddr_t ipaddr;
+
+  uip_ipaddr(&ipaddr, 0,0,0,0);
+  uip_sethostaddr(&ipaddr);
+}
+
 void initNetwork()
 {
   nosPrint("Starting network.\n");
 
-#if UIP_CONF_IPV6
-
   uip_setethaddr(ethaddr);
 
-#else
+#if !UIP_CONF_IPV6 && defined(unix)
 
   uip_ipaddr_t ipaddr;
 
-#ifdef unix
-
   uip_ipaddr(&ipaddr, 192,168,0,2);
-
-#else
-#ifdef VARASTO
-
-  uip_ipaddr(&ipaddr, 192,168,60,202);
-
-#else
-
-  uip_ipaddr(&ipaddr, 192, 168, 60, 213);
-
-#endif /* VARASTO */
-#endif /* unix */
-
-  uip_setethaddr(ethaddr);
   uip_sethostaddr(&ipaddr);
 
-#ifdef unix
-
   uip_ipaddr(&ipaddr, 192,168,0,1);
-
-#else
-
-  uip_ipaddr(&ipaddr, 192, 168, 60, 1);
-
-#endif /* unix */
-
   uip_setdraddr(&ipaddr);
+
   uip_ipaddr(&ipaddr, 255, 255, 255, 0);
   uip_setnetmask(&ipaddr);
 
-#endif /* UIP_CONF_IPV6 */
+#endif
 
   netInit();
+
+#if !UIP_CONF_IPV6 && !defined(unix)
+
+  dhcpc_init(&uip_lladdr, sizeof(uip_lladdr));
+  dhcpc_request();
+
+#endif
 }
 
