@@ -28,44 +28,6 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifdef unix
-
-int ledStatus;
-
-#define LED_GREEN	(1 << 10)
-#define	LED_RED		(1 << 8)
-#define LED_YELLOW	(1 << 11)
-#define	LED_IOSET	ledStatus
-#define	LED_IOCLR	ledStatus
-#define	LED_IODIR	ledStatus
-
-#else
-
-#ifdef VARASTO
-
-// Embedded artists quickstart board
-
-#define LED_GREEN	(1 << 24)
-#define LED_YELLOW	(1 << 25)
-#define	LED_RED		0
-#define	LED_IOSET	GPIO1_IOSET
-#define	LED_IOCLR	GPIO1_IOCLR
-#define	LED_IODIR	GPIO1_IODIR
-
-#else
-
-// Olimex LPC-E2129
-
-#define LED_GREEN	(1 << 10)
-#define	LED_RED		(1 << 8)
-#define LED_YELLOW	(1 << 11)
-#define	LED_IOSET	GPIO0_IOSET
-#define	LED_IOCLR	GPIO0_IOCLR
-#define	LED_IODIR	GPIO0_IODIR
-
-#endif
-#endif
-
 #define MAX_TEMP 2
 #define MAX_TEMP_HISTORY 24
 
@@ -78,6 +40,13 @@ typedef struct {
   float   temps[MAX_TEMP_HISTORY];
   int     tempCount;
 } Sensor;
+
+typedef enum {
+
+  GREEN,
+  YELLOW,
+  RED
+} Led;
 
 extern Sensor sensorData[MAX_TEMP];
 extern POSMUTEX_t sensorMutex;
@@ -92,3 +61,7 @@ void initShell(void);
 void initHttpd(void);
 void initSensors(void);
 void sensorAddressStr(char* buf, Sensor* sensor);
+
+void ledOn(Led led);
+void ledOff(Led led);
+void initBoard(void);

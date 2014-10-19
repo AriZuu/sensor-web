@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2013, Ari Suutari <ari@stonepile.fi>.
+ * Copyright (c) 2014, Ari Suutari <ari@stonepile.fi>.
  * All rights reserved. 
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -28,39 +28,59 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <stdio.h>
 #include <string.h>
 
 #include <picoos.h>
 #include <picoos-u.h>
 #include <picoos-net.h>
-#include "sensor-web.h"
-
-static void mainTask(void *arg)
-{
-  nosPrint("Main task startup.\n");
-  uosBootDiag();
 
 #ifdef USE_FAT
-  DIR dir;
-  UINT rc;
-  FILINFO fno;
-
-  f_mount(0, &fs);
+#include "diskio.h"
 #endif
 
-  initNetwork();
-  initSensors();
-  initHttpd();
-  initShell();
+#include "sensor-web.h"
 
-  sensorTask();
+void ledOn(Led led)
+{
 }
 
-int main(int argc, char **argv)
+void ledOff(Led led)
 {
-  initBoard();
-  uosInit();
-  nosInit(mainTask, NULL, 5, 600, 200);
+}
+
+void initBoard()
+{
+}
+
+#ifdef USE_FAT
+/*
+ * FAT fs routines for "disk drive", ie. disk.fat file.
+ */
+FILE* disk = NULL;
+
+DSTATUS disk_status(BYTE drv)
+{
   return 0;
 }
 
+
+DSTATUS disk_initialize(BYTE drv)
+{
+  disk = fopen("disk.fat", "r");
+  if (disk == NULL)
+    return STA_NOINIT;
+
+  return 0;
+}
+
+DRESULT disk_read(BYTE drv, BYTE *buff, DWORD sector, BYTE count)
+{
+  int i;
+
+  i = fseek(disk, sector * 512, SEEK_SET);
+  i = fread(buff, 512, count, disk);
+  return RES_OK;
+}
+
+#endif

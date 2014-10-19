@@ -27,14 +27,24 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 # OF THE POSSIBILITY OF SUCH DAMAGE.
 
+BOARD ?=LPC-E2129
+#BOARD=UNIX
+#BOARD=TI-LAUNCHPAD
+
 RELROOT = ../picoos/
-
-PORT ?= lpc2xxx
 BUILD ?= DEBUG
-THUMB=yes
 
-ifeq '$(PORT)' 'lpc2xxx'
+ifeq '$(BOARD)' 'LPC-E2129'
+PORT = lpc2xxx
+THUMB=yes
 LD_SCRIPTS=lpc2129-nova.ld
+BOARDFILE=board-olimex-lpce2129.c
+CDEFINES += LPC_E2129
+endif
+
+ifeq '$(BOARD)' 'UNIX'
+PORT = unix
+BOARDFILE=board-unix.c
 endif
 
 include $(RELROOT)make/common.mak
@@ -42,7 +52,7 @@ include $(RELROOT)make/common.mak
 NANO = 1
 TARGET = sensor-web
 SRC_TXT =	sensor-web.c \
-		sensors.c disk.c  net.c  shell.c httpd.c webfiles.c
+		sensors.c net.c  shell.c httpd.c webfiles.c $(BOARDFILE)
 
 SRC_HDR = 
 SRC_OBJ =
@@ -53,10 +63,6 @@ CDEFINES += NO_ONEWIRE
 endif
 
 CDEFINES += SMALL_MEMORY_TARGET
-
-ifeq '$(PORT)' 'unix'
-DIR_USRINC +=	../OneWire/lib/userial 
-endif
 
 DIR_CONFIG = $(CURRENTDIR)/config
 DIR_OUTPUT = $(CURRENTDIR)/bin
@@ -85,9 +91,3 @@ endif
 
 include $(MAKE_OUT)
 
-#
-# Distribution zip.
-#
-dist:
-	rm -f ../dist/sensor-web-`date +%Y%m%d`.zip
-	cd ..; zip -qr dist/sensor-web-`date +%Y%m%d`.zip sensor-web -x "*/.*" "*/bin/*" "*.launch" "*.patch" "*.fat" "*.hex" "*.cgi" "*/webfiles.c" "*/www/amcharts/*"

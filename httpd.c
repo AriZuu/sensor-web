@@ -41,9 +41,6 @@
 #endif
 
 #include <string.h>
-#ifdef unix
-#include <stdio.h>
-#endif
 
 typedef struct
 {

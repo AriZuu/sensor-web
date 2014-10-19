@@ -38,11 +38,6 @@
 #include <picoos.h>
 #include <picoos-u.h>
 #include <picoos-net.h>
-
-#ifndef unix
-#include "lpc_reg.h"
-#endif
-
 #include "sensor-web.h"
 
 Sensor sensorData[MAX_TEMP];
@@ -184,11 +179,11 @@ void sensorTask()
 
   while (1) {
 
-    LED_IOSET = LED_YELLOW;
+    ledOff(GREEN);
     posMutexUnlock(sensorMutex);
     posSemaGet(sensorSema);
     posMutexLock(sensorMutex);
-    LED_IOCLR = LED_YELLOW;
+    ledOn(GREEN);
 
     if (posTimerFired(readTimer)) {
 
@@ -213,9 +208,9 @@ void sensorTask()
 #endif
 
       if (cnt == 0)
-        LED_IOCLR = LED_RED;
+        ledOn(RED);
       else
-        LED_IOSET = LED_RED;
+        ledOff(RED);
 
       sens = sensorData;
       for (s = 0; s < cnt; s++) {
@@ -289,6 +284,4 @@ void initSensors()
   posTimerSet(historyTimer, sensorSema, MS(30 * 60 * 1000 ), MS(30 * 60 * 1000));
 
   memset(sensorData, '\0', sizeof(sensorData));
-  LED_IOSET = LED_RED | LED_GREEN | LED_YELLOW;
-  LED_IODIR |= LED_RED | LED_GREEN | LED_YELLOW;
 }

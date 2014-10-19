@@ -31,11 +31,6 @@
 #include <picoos.h>
 #include <picoos-net.h>
 #include "sys/socket.h"
-
-#ifndef unix
-#include "lpc_reg.h"
-#endif
-
 #include "sensor-web.h"
 #include <string.h>
 
@@ -163,10 +158,7 @@ void shellSessionTask(void* arg)
   bool go = true;
   static char buf[512];
 
-#ifndef unix
-  LED_IOCLR = LED_GREEN;
-#endif
-
+  ledOn(YELLOW);
   telnetInit(&tel, sock);
   telnetWrite(&tel, "Pico[OS " POS_VER_S "\n");
 
@@ -198,10 +190,7 @@ void shellSessionTask(void* arg)
 
   } while (go);
 
-#ifndef unix
-  LED_IOSET = LED_GREEN;
-#endif
-
+  ledOff(YELLOW);
   closesocket(sock);
 }
 
