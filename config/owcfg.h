@@ -30,8 +30,7 @@
 
 #define OW_BIT (1<<24)
 
-#define OWCFG_READ_IN()   ( (GPIO0_IOPIN & OW_BIT) ? 1 : 0 )
-#define OWCFG_OUT_LOW()  ( GPIO0_IOCLR = OW_BIT )
-#define OWCFG_OUT_HIGH() ( GPIO0_IOSET = OW_BIT )
-#define OWCFG_DIR_IN()   ( GPIO0_IODIR &= ~(OW_BIT) )
-#define OWCFG_DIR_OUT()  ( GPIO0_IODIR |= OW_BIT )
+#define OWCFG_READ_IN()   ((GPIO0_IOPIN & OW_BIT) ? 1 : 0 )
+#define OWCFG_OUT_LOW()   GPIO0_IOCLR = OW_BIT; GPIO0_IODIR |= OW_BIT
+#define OWCFG_OUT_HIGH()  GPIO0_IOSET = OW_BIT; GPIO0_IODIR |= OW_BIT
+#define OWCFG_DIR_IN()    GPIO0_IODIR &= ~(OW_BIT)
