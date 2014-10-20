@@ -28,15 +28,13 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _NETCFG_H
-#define _NETCFG_H
+#ifndef _NETCFG_BOARD_H
+#define _NETCFG_BOARD_H
 /*
  * uIP settings (see Contiki/uIP documentation).
  */
 
 #define UIP_CONF_IPV6       0
 #define NETCFG_DRIVER_TAP 2
-
-#include "netcfg_common.h"
 
 #endif

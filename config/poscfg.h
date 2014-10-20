@@ -50,6 +50,9 @@
 
 // idle, main, sensors, net and 4 sockets and 2 listen socks.
 #define SOCK_COUNT (UIP_CONF_MAX_CONNECTIONS + UIP_CONF_MAX_LISTENPORTS + UIP_CONF_UDP_CONNS)
+
+#include "poscfg-board.h"
+
 /*---------------------------------------------------------------------------
  *  OS CORE SETTINGS
  *-------------------------------------------------------------------------*/
@@ -75,10 +78,8 @@
  * The value for this definition must be a power of two and can
  * not exceed the count of bits set by ::MVAR_BITS.
  */
-#if UIP_CONF_MAX_CONNECTIONS > 4
+#ifndef POSCFG_TASKS_PER_PRIO
 #define POSCFG_TASKS_PER_PRIO   32
-#else
-#define POSCFG_TASKS_PER_PRIO   8
 #endif
 
 /** Maximum count of tasks.
@@ -261,16 +262,9 @@
  * This define must be set to the tickrate of the timer
  * interrupt (= timer ticks per second).
  */
-#ifdef unix
-#define HZ                   100  /* timer ticks per second */
-#else
+#ifndef HZ
 #define HZ                   1000  /* timer ticks per second */
 #endif
-
-/**
- * Defines the crystal clock in HZ
- */
-#define PORTCFG_CRYSTAL_CLOCK          58982400
 
 /** @} */
 
@@ -548,18 +542,8 @@
 /** @} */
 
 
-/*---------------------------------------------------------------------------
- *  ADDITIONAL USER SETTINGS FOR THE ARM PORT
- *-------------------------------------------------------------------------*/
-
-#ifdef unix
-#define PORTCFG_MIN_STACK_SIZE	65535
-#endif
-
+#ifndef PORTCFG_IRQ_STACK_SIZE
 #define PORTCFG_IRQ_STACK_SIZE 1024
-
-// cortex-m
-#define PORTCFG_VECTORS 1
-#define PORTCFG_TICK_SYSTICK 1
+#endif
 
 #endif /* _POSCFG_H */

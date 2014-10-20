@@ -44,7 +44,7 @@
 #ifndef _NOSCFG_H
 #define _NOSCFG_H
 
-
+#include "noscfg-board.h"
 
 /*---------------------------------------------------------------------------
  *  MEMORY MANAGEMENT
@@ -73,10 +73,8 @@
  *   2 = The user supplys its own memory allocation routines.
  *       See defines ::NOSCFG_MEM_USER_MALLOC and ::NOSCFG_MEM_USER_FREE.
  */
-#ifdef __arm__
+#ifndef NOSCFG_MEM_MANAGER_TYPE
 #define NOSCFG_MEM_MANAGER_TYPE      1
-#else
-#define NOSCFG_MEM_MANAGER_TYPE      0
 #endif
 
 /** This is a pointer to the start of the memory heap.
@@ -336,21 +334,7 @@ extern void *__heap_end;
 
 /** @} */
 
-
-/*---------------------------------------------------------------------------
- *  ADDITIONAL USER SETTINGS FOR THE ARM PORT
- *-------------------------------------------------------------------------*/
-
-/** Set the console speed.
- */
-
-#define PORTCFG_CONSOLE_SPEED		     115200
 #define NOSCFG_FEATURE_SEMAPHORES 1
-//#define NOSCFG_FEATURE_TIMER 1
-
 #define NOSCFG_FEATURE_USE_STDARG 1
 
-// launchpad
-#define PORTCFG_CONOUT_ITM 0
-#define PORTCFG_CON_USART UART0_BASE
 #endif /* _NOSCFG_H */
