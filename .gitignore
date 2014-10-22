@@ -2,3 +2,4 @@ bin
 *.hex
 *.fat
 *.core
+/sensor-web.bin

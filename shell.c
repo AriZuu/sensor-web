@@ -251,8 +251,8 @@ void shellTask(void* arg)
 void initShell()
 {
   POSTASK_t task;
-
-  task = posTaskCreate(shellTask, NULL, 2, 300);
+#warning was 300, now free 744
+  task = posTaskCreate(shellTask, NULL, 2, 1000);
   POS_SETTASKNAME(task, "shell");
 }
 

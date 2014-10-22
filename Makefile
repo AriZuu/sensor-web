@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2012-2013, Ari Suutari <ari@stonepile.fi>.
+# Copyright (c) 2012-2014, Ari Suutari <ari@stonepile.fi>.
 # All rights reserved. 
 # 
 # Redistribution and use in source and binary forms, with or without
@@ -27,9 +27,9 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 # OF THE POSSIBILITY OF SUCH DAMAGE.
 
-BOARD ?=LPC-E2129
+#BOARD ?=LPC-E2129
 #BOARD ?=UNIX
-#BOARD ?=TI-LAUNCHPAD
+BOARD ?=TI-LAUNCHPAD
 
 RELROOT = ../picoos/
 BUILD ?= DEBUG
@@ -58,6 +58,7 @@ include $(RELROOT)make/common.mak
 ifeq '$(BOARD)' 'LPC-E2129'
 BOARDFILES=board/olimex-lpc-e2129/board.c
 DIR_CONFIG = $(CURRENTDIR)/board/olimex-lpc-e2129
+POSTLINK2 = arm-none-eabi-objcopy -O ihex $(TARGETOUT) $(TARGET).hex
 endif
 
 ifeq '$(BOARD)' 'TI-LAUNCHPAD'
@@ -68,7 +69,7 @@ CMSIS_INCLUDES=$(CURRENTDIR)/../cmsis-ports/tiva/tivaware $(CURRENTDIR)/../cmsis
 CMSIS_DEFINES=TM4C1294NCPDT PART_TM4C1294NCPDT  gcc
 export CMSIS_DEFINES
 export CMSIS_INCLUDES
-POSTLINK2 = arm-none-eabi-objcopy -O binary $(TARGETOUT) net.bin
+POSTLINK2 = arm-none-eabi-objcopy -O binary $(TARGETOUT) $(TARGET).bin
 MODULES += ../cmsis-ports/tiva
 endif
 
@@ -98,7 +99,6 @@ MODULES += ../picoos-net ../picoos-micro
 
 ifneq '$(PORT)' 'unix'
 POSTLINK1 = arm-none-eabi-size $(TARGETOUT)
-POSTLINK2 = arm-none-eabi-objcopy -O ihex $(TARGETOUT) $(TARGET).hex
 endif
 
 #

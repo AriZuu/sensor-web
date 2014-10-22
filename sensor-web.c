@@ -60,7 +60,8 @@ int main(int argc, char **argv)
 {
   initBoard();
   uosInit();
-  nosInit(mainTask, NULL, 5, 600, 200);
+#warning was 600, 200, idle free 360
+  nosInit(mainTask, NULL, 5, 2000, 500);
   return 0;
 }
 

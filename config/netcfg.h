@@ -43,7 +43,7 @@
 #define UIP_CONF_IPV6       1
 #endif
 
-#define UIP_CONF_LOGGING          1
+#define UIP_CONF_LOGGING          0
 
 #ifndef UIP_CONF_MAX_CONNECTIONS
 #define UIP_CONF_MAX_CONNECTIONS  32
@@ -57,7 +57,11 @@
 
 #define UIP_CONF_UDP              1
 #define UIP_CONF_UDP_CHECKSUMS    1
+#if UIP_CONF_IPV6
 #define UIP_CONF_UDP_CONNS        1
+#else
+#define UIP_CONF_UDP_CONNS        2 // for dhcp
+#endif
 
 #define UIP_CONF_STATISTICS       1
 #define UIP_CONF_ROUTER 	  0

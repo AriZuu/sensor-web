@@ -131,7 +131,7 @@ void sensorTask()
   uip_ip6addr(&ipaddr, 0xfd7b, 0xede2, 0x27c7, 0x41, 0x0, 0x0, 0x0, 0xd);
 #endif
 #else
-  uip_ipaddr(&ipaddr, 192, 168, 60, 7);
+  uip_ipaddr(&ipaddr, 192, 168, 65, 13);
 #endif
 
 #ifdef VARASTO

@@ -34,6 +34,9 @@
  * uIP settings (see Contiki/uIP documentation).
  */
 
+//#define UIP_CONF_IPV6       0
+#warning default 500, free now 568
+#define NETCFG_STACK_SIZE 1000
 #define NETCFG_DRIVER_TM4C1294 2
 
 #endif

@@ -33,5 +33,7 @@
 
 #define PORTCFG_VECTORS 1
 #define PORTCFG_TICK_SYSTICK 1
+#warning not set
+#define PORTCFG_IRQ_STACK_SIZE 2024
 
 #endif /* _POSCFG_H */

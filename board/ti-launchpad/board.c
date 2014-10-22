@@ -34,6 +34,12 @@
 #include <picoos-u.h>
 #include <picoos-net.h>
 
+#include "inc/hw_types.h"
+#include "inc/hw_memmap.h"
+#include "driverlib/sysctl.h"
+#include "driverlib/gpio.h"
+#include "driverlib/pin_map.h"
+
 #include "sensor-web.h"
 
 void ledOn(Led led)
@@ -77,11 +83,78 @@ void ledOff(Led led)
 void initBoard()
 {
   /*
-   * Led pins to output.
+   * Enable all the GPIO peripherals.
    */
-#if 0
-  GPIO0_IOSET = (1 << 8) | (1 << 10) | (1 << 11);
-  GPIO0_IODIR |= (1 << 8) | (1 << 10) | (1 << 11);
-#endif
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOB);
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOC);
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOG);
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOH);
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOJ);
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOK);
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOL);
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOM);
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_GPION);
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOP);
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOQ);
+
+  /*
+   * Configure UART0 console pins.
+   */
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
+  GPIOPinConfigure(GPIO_PA0_U0RX);
+  GPIOPinConfigure(GPIO_PA1_U0TX);
+  GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
+
+  /*
+   * We don't need USB. Add a pull down to PD6 to turn off the TPS2052 switch.
+   */
+  GPIOPinTypeGPIOInput(GPIO_PORTD_BASE, GPIO_PIN_6);
+  GPIOPadConfigSet(GPIO_PORTD_BASE, GPIO_PIN_6, GPIO_STRENGTH_2MA,
+                       GPIO_PIN_TYPE_STD_WPD);
+
+  /*
+   * PF0/PF4 are used for Ethernet LEDs.
+   */
+  GPIOPinConfigure(GPIO_PF0_EN0LED0);
+  GPIOPinConfigure(GPIO_PF4_EN0LED1);
+
+  GPIOPinTypeEthernetLED(GPIO_PORTF_BASE, GPIO_PIN_0 | GPIO_PIN_4);
+
+  /*
+   * PJ0 and J1 are used for user buttons
+   */
+  GPIOPinTypeGPIOInput(GPIO_PORTJ_BASE, GPIO_PIN_0 | GPIO_PIN_1);
+  GPIOPinWrite(GPIO_PORTJ_BASE, GPIO_PIN_0 | GPIO_PIN_1, 0);
+
+  /*
+   * PN0 and PN1 are used for USER LEDs.
+   */
+  GPIOPinTypeGPIOOutput(GPIO_PORTN_BASE, GPIO_PIN_0 | GPIO_PIN_1);
+  GPIOPadConfigSet(GPIO_PORTN_BASE, GPIO_PIN_0 | GPIO_PIN_1,
+                   GPIO_STRENGTH_12MA, GPIO_PIN_TYPE_STD);
+
+  /*
+   * Default the LEDs to OFF.
+   */
+  GPIOPinWrite(GPIO_PORTN_BASE, GPIO_PIN_0 | GPIO_PIN_1, 0);
+  /*
+   * PN0 and PN1 are used for USER LEDs.
+   */
+  GPIOPinTypeGPIOOutput(GPIO_PORTN_BASE, GPIO_PIN_0 | GPIO_PIN_1);
+
+  /*
+   * OneWire, PK7
+   */
+  GPIOPadConfigSet(GPIO_PORTK_BASE, GPIO_PIN_7,
+                   GPIO_STRENGTH_12MA, GPIO_PIN_TYPE_STD_WPU);
+
+  /*
+   * Default output to low.
+   */
+  GPIOPinWrite(GPIO_PORTK_BASE, GPIO_PIN_7, 0);
 }
 

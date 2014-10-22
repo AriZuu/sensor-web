@@ -29,11 +29,23 @@
  */
 
 /*
- * Onewire gpio settings for Olimex LPC-E2129.
+ * Onewire gpio settings for TI Launchpad.
  */
-#define OW_BIT (1<<24)
 
-#define OWCFG_READ_IN()   0//((GPIO0_IOPIN & OW_BIT) ? 1 : 0 )
-#define OWCFG_OUT_LOW()   //GPIO0_IOCLR = OW_BIT; GPIO0_IODIR |= OW_BIT
-#define OWCFG_OUT_HIGH()  //GPIO0_IOSET = OW_BIT; GPIO0_IODIR |= OW_BIT
-#define OWCFG_DIR_IN()    //GPIO0_IODIR &= ~(OW_BIT)
+#include <stdbool.h>
+#include <stdint.h>
+
+#include "inc/hw_types.h"
+#include "inc/hw_memmap.h"
+#include "driverlib/sysctl.h"
+#include "driverlib/gpio.h"
+#include "driverlib/pin_map.h"
+
+#define OW_BIT GPIO_PIN_7
+
+#define OWCFG_READ_IN()   (GPIOPinRead(GPIO_PORTK_BASE, OW_BIT) ? 1 : 0)
+#define OWCFG_OUT_LOW()   GPIODirModeSet(GPIO_PORTK_BASE, OW_BIT, GPIO_DIR_MODE_OUT); \
+                          GPIOPinWrite(GPIO_PORTK_BASE, OW_BIT, 0)
+#define OWCFG_OUT_HIGH()  GPIODirModeSet(GPIO_PORTK_BASE, OW_BIT, GPIO_DIR_MODE_OUT); \
+                          GPIOPinWrite(GPIO_PORTK_BASE, OW_BIT, OW_BIT)
+#define OWCFG_DIR_IN()    GPIODirModeSet(GPIO_PORTK_BASE, OW_BIT, GPIO_DIR_MODE_IN)
