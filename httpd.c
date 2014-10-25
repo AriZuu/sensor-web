@@ -435,7 +435,6 @@ void httpdTask(void* arg)
       continue;
 
     POSTASK_t task;
-#warning was 1100
     task = posTaskCreate(httpClientTask, (void*)(intptr_t)s, 1, 1200);
     if (task == NULL) {
 
@@ -451,8 +450,7 @@ void httpdTask(void* arg)
 void initHttpd()
 {
   POSTASK_t task;
-#warning was 300, now free 744, http client free 60
-  task = posTaskCreate(httpdTask, NULL, 2, 1000);
+  task = posTaskCreate(httpdTask, NULL, 2, 400);
   POS_SETTASKNAME(task, "httpd");
 }
 
