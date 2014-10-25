@@ -40,6 +40,8 @@
 #include "webfiles.h"
 #endif
 
+#define TRACENAME "httpd: "
+
 #include <string.h>
 
 typedef struct
@@ -207,25 +209,25 @@ static int http(NetSock* sock)
   i = netSockReadLine(sock, buf, sizeof(buf), MS(5000));
   if (i <= 0) {
 
-    nosPrint("httpd: timeout.\n");
+    nosPrint(TRACENAME "timeout.\n");
     return -1;
   }
 
   if (buf[i - 1] != '\n') {
    
-    nosPrintf("httpd: request too long, %d bytes: %s\n", i, buf);
+    nosPrintf(TRACENAME "request too long, %d bytes: %s\n", i, buf);
     return -1;
   }
 
   buf[i - 1] = '\0';
-  nosPrintf("httpd: %s  mss %d\n", buf, UIP_TCP_MSS);
+  nosPrintf(TRACENAME "%s  mss %d\n", buf, UIP_TCP_MSS);
   ptr = strtok_r(buf, " ", &tok);
   if (ptr == NULL)
     return -1;
 
   if (strlen(ptr) > sizeof(req) - 1) {
 
-    nosPrint("httpd: verb too long\n");
+    nosPrint(TRACENAME "verb too long\n");
     return -1;
   }
 
@@ -237,7 +239,7 @@ static int http(NetSock* sock)
 
   if (strlen(ptr) > sizeof(url) - 1) {
 
-    nosPrint("httpd: url too long\n");
+    nosPrint(TRACENAME "url too long\n");
     return -1;
   }
 
@@ -247,7 +249,7 @@ static int http(NetSock* sock)
 
     i = netSockReadLine(sock, buf, sizeof(buf) - 1, MS(5000));
     if (i <= 0) {
-      nosPrint("httpd: timeout reading headers.\n");
+      nosPrint(TRACENAME "timeout reading headers.\n");
       return -1;
     }
 
@@ -439,7 +441,7 @@ void httpdTask(void* arg)
     if (task == NULL) {
 
 #if NOSCFG_FEATURE_CONOUT == 1
-      nosPrint("net: out of tasks.");
+      nosPrint(TRACENAME "out of tasks.");
 #endif
       closesocket(s);
     }

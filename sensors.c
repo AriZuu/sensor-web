@@ -40,6 +40,8 @@
 #include <picoos-net.h>
 #include "sensor-web.h"
 
+#define TRACENAME "sens:  "
+
 Sensor sensorData[MAX_TEMP];
 
 POSMUTEX_t sensorMutex;
@@ -55,7 +57,7 @@ void sensorAddressStr(char* buf, Sensor* sensor)
   *buf = '\0';
   for (i = 7; i >= 0; i--) {
 
-    nosSPrintf(buf + strlen(buf), "%X", (int)sensor->serialNum[i]);
+    nosSPrintf(buf + strlen(buf), "%02X", (int)sensor->serialNum[i]);
     if (i > 0)
       strcat(buf, "-");
    }
@@ -121,9 +123,10 @@ void sensorTask()
   char    buf[30];
   Sensor* sens;
   uip_ipaddr_t		  ipaddr;
+  char trace[80];
 
   posMutexLock(sensorMutex);
-  nosPrint("OneWire start !\n");
+  nosPrint(TRACENAME "OneWire start !\n");
 #if UIP_CONF_IPV6
 #ifdef unix
   uip_ip6addr(&ipaddr, 0xfe80, 0, 0, 0, 0x02bd, 0x5dff, 0xfe93, 0x2900);
@@ -156,7 +159,7 @@ void sensorTask()
   portNum = owAcquireEx("/dev/cuaU0");
   if (portNum < 0) {
 
-    nosPrint("owAcquire failed\n");
+    nosPrint(TRACENAME "owAcquire failed\n");
     return;
   }
 
@@ -164,12 +167,12 @@ void sensorTask()
   portNum = 0;
   if (!owAcquire(portNum, NULL)) {
 
-    nosPrint("owAcquire failed\n");
+    nosPrint(TRACENAME "owAcquire failed\n");
     return;
   }
 #endif
 
-  nosPrint("OneWire init ok !\n");
+  nosPrint(TRACENAME "OneWire init ok !\n");
   posTaskSleep(MS(1000));
 #endif
 
@@ -217,9 +220,9 @@ void sensorTask()
 
         posTaskSleep(MS(100));
 #if 1
-        nosPrintf("%d: Serial=", s);
+        nosSPrintf(trace, TRACENAME "%d: Serial=", s);
         sensorAddressStr(buf, sens);
-        nosPrint(buf);
+        strcat(trace, buf);
 #endif
 #ifdef NO_ONEWIRE
         sens->temp += 0.5 * (1 + s);
@@ -235,7 +238,7 @@ void sensorTask()
         sens->temp = value;
 #endif
 #if 1
-        nosPrintf(" Temp=%d.%d oC\n", (int)sens->temp, (int)(sens->temp * 10) % 10);
+        nosPrintf("%s Temp=%d.%d oC\n", trace, (int)sens->temp, (int)(sens->temp * 10) % 10);
 #endif
         sendTemperature(sens);
         sens++;
