@@ -71,6 +71,7 @@ export CMSIS_DEFINES
 export CMSIS_INCLUDES
 POSTLINK2 = arm-none-eabi-objcopy -O binary $(TARGETOUT) $(TARGET).bin
 MODULES += ../cmsis-ports/tiva
+CDEFINES += VARASTO
 endif
 
 ifeq '$(BOARD)' 'UNIX'

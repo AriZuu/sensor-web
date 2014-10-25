@@ -435,8 +435,8 @@ void httpdTask(void* arg)
       continue;
 
     POSTASK_t task;
-
-    task = posTaskCreate(httpClientTask, (void*)(intptr_t)s, 1, 1100);
+#warning was 1100
+    task = posTaskCreate(httpClientTask, (void*)(intptr_t)s, 1, 1200);
     if (task == NULL) {
 
 #if NOSCFG_FEATURE_CONOUT == 1

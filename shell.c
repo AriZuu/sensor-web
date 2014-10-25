@@ -113,7 +113,7 @@ static void osStats(NetTelnet* t, char* buf)
       ++freeStack;
     }
 
-    nosSPrintf(buf, "task %s unused stack %d\n", task->name, freeStack);
+    nosSPrintf(buf, "task %s stack size %u used %d free %d\n", task->name, task->handle->stackSize, task->handle->stackSize - freeStack, freeStack);
     telnetWrite(t, buf);
 
 #endif
