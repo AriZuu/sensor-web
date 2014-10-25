@@ -111,3 +111,13 @@
 
 void UART0_Handler(void);
 void ENET_Handler(void);
+
+#include <stdbool.h>
+#include <stdint.h>
+
+#include "inc/hw_types.h"
+#include "inc/hw_memmap.h"
+#include "driverlib/sysctl.h"
+#include "driverlib/gpio.h"
+#include "driverlib/pin_map.h"
+

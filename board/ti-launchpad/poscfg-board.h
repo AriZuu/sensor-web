@@ -36,14 +36,14 @@
 #warning not set
 #define PORTCFG_IRQ_STACK_SIZE 2024
 
-task httpc stack size 1200 used 928 free 272
-task httpc stack size 1200 used 928 free 272
-task httpc stack size 1200 used 928 free 272
-task sess stack size 700 used 488 free 212
-task shell stack size 1000 used 288 free 712
-task httpd stack size 1000 used 288 free 712
-task uip:main stack size 1000 used 304 free 696
-task root task stack size 2000 used 560 free 1440
-task idle task stack size 500 used 140 free 360
+//task httpc stack size 1200 used 928 free 272
+//task httpc stack size 1200 used 928 free 272
+//task httpc stack size 1200 used 928 free 272
+//task sess stack size 700 used 488 free 212
+//task shell stack size 1000 used 288 free 712
+//task httpd stack size 1000 used 288 free 712
+//task uip:main stack size 1000 used 304 free 696
+//task root task stack size 2000 used 560 free 1440
+//task idle task stack size 500 used 140 free 360
 
 #endif /* _POSCFG_H */

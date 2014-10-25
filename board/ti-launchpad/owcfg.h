@@ -32,15 +32,6 @@
  * Onewire gpio settings for TI Launchpad.
  */
 
-#include <stdbool.h>
-#include <stdint.h>
-
-#include "inc/hw_types.h"
-#include "inc/hw_memmap.h"
-#include "driverlib/sysctl.h"
-#include "driverlib/gpio.h"
-#include "driverlib/pin_map.h"
-
 #define OW_BIT GPIO_PIN_7
 
 #define OWCFG_READ_IN()   (GPIOPinRead(GPIO_PORTK_BASE, OW_BIT) ? 1 : 0)
