@@ -31,7 +31,7 @@
 #include <picoos.h>
 #include <picoos-net.h>
 #include "sensor-web.h"
-#include "net/dhcpc.h"
+#include "net/ip/dhcpc.h"
 
 static struct uip_eth_addr ethaddr = {
 

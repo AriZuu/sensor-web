@@ -51,7 +51,10 @@ endif
 
 ifeq '$(BOARD)' 'UNIX'
 PORT = unix
+NETCFG_STACK = 6
 endif
+
+export NETCFG_STACK
 
 include $(RELROOT)make/common.mak
 
