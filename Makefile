@@ -65,12 +65,10 @@ ifeq '$(BOARD)' 'TI-LAUNCHPAD'
 BOARDFILES=board/ti-launchpad/board.c board/ti-launchpad/startup.c
 DIR_CONFIG = $(CURRENTDIR)/board/ti-launchpad
 # CMSIS setup
-CMSIS_INCLUDES=$(CURRENTDIR)/../cmsis-ports/tiva/tivaware $(CURRENTDIR)/../cmsis-ports/tiva/inc 
-CMSIS_DEFINES=TM4C1294NCPDT PART_TM4C1294NCPDT  gcc
-export CMSIS_DEFINES
-export CMSIS_INCLUDES
+CMSIS_MODULES=$(CURRENTDIR)/../cmsis-ports/tiva
+TIVA_DEFINES=TM4C1294NCPDT PART_TM4C1294NCPDT
+export TIVA_DEFINES
 POSTLINK2 = arm-none-eabi-objcopy -O binary $(TARGETOUT) $(TARGET).bin
-MODULES += ../cmsis-ports/tiva
 CDEFINES += VARASTO
 endif
 
