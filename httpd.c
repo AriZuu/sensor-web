@@ -29,11 +29,12 @@
  */
 
 #include <picoos.h>
+#include <picoos-u.h>
 #include <picoos-net.h>
 #include "sensor-web.h"
 #include "sys/socket.h"
 
-#ifdef USE_FAT
+#if UOSCFG_FAT
 #include "ff.h"
 #else
 #include "webfiles.h"
@@ -58,7 +59,7 @@ const Mime mimeTypes[] = {
     { "txt", "text/plain" }
 };
 
-#ifdef USE_FAT
+#if UOSCFG_FAT
 FATFS fs;
 #endif
 
@@ -198,7 +199,7 @@ static int http(NetSock* sock)
   int i;
   int bytes;
   bool cgi;
-#ifdef USE_FAT
+#if UOSCFG_FAT
   bool gz;
   UINT br;
 #else
@@ -267,7 +268,7 @@ static int http(NetSock* sock)
   if (!strcmp(url, "/"))
     strcpy(url, "/index.html");
 
-#ifdef USE_FAT
+#if UOSCFG_FAT
   FIL f;
   FRESULT rc;
 #endif
@@ -279,7 +280,7 @@ static int http(NetSock* sock)
     cgi = true;
   else {
     cgi = false;
-#ifdef USE_FAT
+#if UOSCFG_FAT
     gz = false;
     rc = f_open(&f, url, FA_READ);
     if (rc == FR_NO_FILE) {
@@ -307,7 +308,7 @@ static int http(NetSock* sock)
 #endif
   }
 
-#ifdef USE_FAT
+#if UOSCFG_FAT
   if (!cgi && rc) {
 #else
   if (!cgi && file == NULL) {
@@ -342,7 +343,7 @@ static int http(NetSock* sock)
           }
       }
 
-#ifdef USE_FAT
+#if UOSCFG_FAT
       if (gz)
 #else
       if (file->gzip)
@@ -363,7 +364,7 @@ static int http(NetSock* sock)
     if (cgi)
       bytes = serveCgi(sock, url, buf);
     else {
-#ifdef USE_FAT
+#if UOSCFG_FAT
       bytes = 0;
       do {
         rc = f_read(&f, buf, sizeof(buf), &br);

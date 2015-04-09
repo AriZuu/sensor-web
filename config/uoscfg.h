@@ -30,4 +30,4 @@
 
 #define _FS_READONLY 1
 #define UOSCFG_SPIN_USECS 1
-#define UOSCFG_FAT 1
+#define UOSCFG_FAT 0

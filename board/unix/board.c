@@ -35,7 +35,7 @@
 #include <picoos-u.h>
 #include <picoos-net.h>
 
-#ifdef USE_FAT
+#if UOSCFG_FAT
 #include "diskio.h"
 #endif
 
@@ -53,7 +53,7 @@ void initBoard()
 {
 }
 
-#ifdef USE_FAT
+#if UOSCFG_FAT
 /*
  * FAT fs routines for "disk drive", ie. disk.fat file.
  */
@@ -74,7 +74,7 @@ DSTATUS disk_initialize(BYTE drv)
   return 0;
 }
 
-DRESULT disk_read(BYTE drv, BYTE *buff, DWORD sector, BYTE count)
+DRESULT disk_read(BYTE drv, BYTE *buff, DWORD sector, UINT count)
 {
   int i;
 
