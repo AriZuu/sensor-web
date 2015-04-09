@@ -33,7 +33,6 @@
 #include "sensor-web.h"
 #include "sys/socket.h"
 
-//#define USE_FAT
 #ifdef USE_FAT
 #include "ff.h"
 #else
@@ -268,6 +267,11 @@ static int http(NetSock* sock)
   if (!strcmp(url, "/"))
     strcpy(url, "/index.html");
 
+#ifdef USE_FAT
+  FIL f;
+  FRESULT rc;
+#endif
+
   ptr = strchr(url, '?');
   if (ptr != NULL)
     *ptr = '\0';
@@ -276,8 +280,6 @@ static int http(NetSock* sock)
   else {
     cgi = false;
 #ifdef USE_FAT
-    FIL f;
-    FRESULT rc;
     gz = false;
     rc = f_open(&f, url, FA_READ);
     if (rc == FR_NO_FILE) {

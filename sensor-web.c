@@ -35,16 +35,17 @@
 #include <picoos-net.h>
 #include "sensor-web.h"
 
+#ifdef USE_FAT
+#include "ff.h"
+extern FATFS fs;
+#endif
+
 static void mainTask(void *arg)
 {
   nosPrint("Main task startup.\n");
   uosBootDiag();
 
 #ifdef USE_FAT
-  DIR dir;
-  UINT rc;
-  FILINFO fno;
-
   f_mount(0, &fs);
 #endif
 

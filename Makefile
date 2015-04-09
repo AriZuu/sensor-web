@@ -75,6 +75,10 @@ endif
 ifeq '$(BOARD)' 'UNIX'
 BOARDFILES=board/unix/board.c
 CDEFINES += NO_ONEWIRE
+# 
+# Uncomment to use FAT fs image for web files.
+#
+#CDEFINES += USE_FAT
 DIR_CONFIG = $(CURRENTDIR)/board/unix
 endif
 
