@@ -1,7 +1,7 @@
-Temperature sensor with Olimex LPC-E2129
-=======================================
+Temperature sensor with Tiva launchpad
+======================================
 
-This is a small temperature sensor application for Olimex LPC-E2129 board.
+This is a small temperature sensor application for Texas Instruments Tiva Launchpad board.
 It reads temperatures from DS1820 chips and transmits results with
 UDP packets to network.
 
