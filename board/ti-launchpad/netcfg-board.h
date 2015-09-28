@@ -34,7 +34,6 @@
  * uIP settings (see Contiki/uIP documentation).
  */
 
-//#define UIP_CONF_IPV6       0
 #define NETCFG_DRIVER_TM4C1294 2
 
 #endif

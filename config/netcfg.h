@@ -39,10 +39,6 @@
 
 #define UIP_CONF_LLH_LEN 14
 
-#ifndef UIP_CONF_IPV6
-#define UIP_CONF_IPV6       1
-#endif
-
 #define UIP_CONF_LOGGING          0
 
 #ifndef UIP_CONF_MAX_CONNECTIONS

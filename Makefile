@@ -38,6 +38,7 @@ ifeq '$(BOARD)' 'LPC-E2129'
 PORT = lpc2xxx
 THUMB=yes
 LD_SCRIPTS=board/olimex-lpc-e2129/lpc2129-nova.ld
+NETCFG_STACK = 4
 endif
 
 ifeq '$(BOARD)' 'TI-LAUNCHPAD'
@@ -46,6 +47,7 @@ CPU = tm4c
 CORTEX = m4
 export CORTEX
 
+NETCFG_STACK = 6
 LD_SCRIPTS=board/ti-launchpad/tiva.ld
 endif
 
