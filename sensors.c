@@ -63,7 +63,7 @@ void sensorAddressStr(char* buf, Sensor* sensor)
    }
 }
 
-static NetSock* sensorSock;
+static UosFile* sensorSock;
 
 static void history(Sensor* sens)
 {
@@ -92,7 +92,7 @@ static void sendTemperature(Sensor* sens)
   memcpy(tempBuf + 4, sens->serialNum, 8);
   memcpy(tempBuf + 4 + 8, &sens->temp, sizeof(sens->temp));
 
-  netSockWrite(sensorSock, tempBuf, 16);
+  uosFileWrite(sensorSock, tempBuf, 16);
 
   if (sens->tempCount == 0) {
   

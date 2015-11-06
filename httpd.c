@@ -57,7 +57,7 @@ const Mime mimeTypes[] = {
 #define T2I(t) (int)(t)
 #define T2D(t) (((int)(10 * t)) % 10)
 
-static int serveCgi(NetSock* sock, char* url, char* buf)
+static int serveCgi(UosFile* sock, char* url, char* buf)
 {
   char* ptr;
   int i;
@@ -118,7 +118,7 @@ static int serveCgi(NetSock* sock, char* url, char* buf)
       if (i == MAX_TEMP - 1 || s[1].serialNum[0] == 0) {
         strcat(ptr, "]");
         ptr += 1;
-        netSockWrite(sock, buf, ptr - buf);
+        uosFileWrite(sock, buf, ptr - buf);
         break;
       }
       else {
@@ -127,7 +127,7 @@ static int serveCgi(NetSock* sock, char* url, char* buf)
         ptr += 1;
         if (SOCK_BUF_SIZE - (ptr - buf) < 128) {
 
-          netSockWrite(sock, buf, ptr - buf);
+          uosFileWrite(sock, buf, ptr - buf);
           ptr = buf;
         }
       }
@@ -158,14 +158,14 @@ static int serveCgi(NetSock* sock, char* url, char* buf)
 
         strcat(ptr, "]");
         ptr += 1;
-        netSockWrite(sock, buf, ptr - buf);
+        uosFileWrite(sock, buf, ptr - buf);
       }
       else {
         strcat(ptr, ",");
         ptr += 1;
         if (SOCK_BUF_SIZE - (ptr - buf) < 128) {
 
-          netSockWrite(sock, buf, ptr - buf);
+          uosFileWrite(sock, buf, ptr - buf);
           ptr = buf;
         }
       }
@@ -174,12 +174,12 @@ static int serveCgi(NetSock* sock, char* url, char* buf)
     posMutexUnlock(sensorMutex);
   }
   else
-    netSockWrite(sock, "No-No", 5);
+    uosFileWrite(sock, "No-No", 5);
 
   return 0;
 }
 
-static int http(NetSock* sock)
+static int http(UosFile* sock)
 {
   char buf[SOCK_BUF_SIZE];
   char* ptr;
@@ -248,7 +248,7 @@ static int http(NetSock* sock)
   if (strcmp(req, "GET")) {
 
     strcpy(buf, "HTTP/1.1 500 Bad verb\r\n");
-    netSockWrite(sock, buf, strlen(buf));
+    uosFileWrite(sock, buf, strlen(buf));
     return 0;
   }
 
@@ -282,7 +282,7 @@ static int http(NetSock* sock)
     strcat(buf, "Connection: close\r\n");
     strcat(buf, "\r\n");
     strcat(buf, "not found");
-    netSockWrite(sock, buf, strlen(buf));
+    uosFileWrite(sock, buf, strlen(buf));
   }
   else {
 
@@ -317,7 +317,7 @@ static int http(NetSock* sock)
       strcat(buf, "Cache-control: max-age=3600\r\n");
 
     strcat(buf, "\r\n");
-    netSockWrite(sock, buf, strlen(buf));
+    uosFileWrite(sock, buf, strlen(buf));
 
     if (cgi)
       bytes = serveCgi(sock, url, buf);
@@ -329,7 +329,7 @@ static int http(NetSock* sock)
         len = uosFileRead(file, buf, sizeof(buf));
         if (len > 0) {
           bytes += len;
-          i = netSockWrite(sock, buf, len);
+          i = uosFileWrite(sock, buf, len);
         }
       }while (len > 0);
 
@@ -344,7 +344,7 @@ static int http(NetSock* sock)
 void httpClientTask(void* arg)
 {
   int sockfd = (intptr_t)arg;
-  NetSock* sock = netSockConnection(sockfd);
+  UosFile* sock = uosFile(sockfd);
   int bytes;
 
   bytes = http(sock);

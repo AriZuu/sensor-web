@@ -53,7 +53,7 @@ endif
 
 ifeq '$(BOARD)' 'UNIX'
 PORT = unix
-NETCFG_STACK = 6
+NETCFG_STACK = 4
 endif
 
 export NETCFG_STACK
