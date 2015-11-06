@@ -35,19 +35,14 @@
 #include <picoos-net.h>
 #include "sensor-web.h"
 
-#if UOSCFG_FAT
-#include "ff.h"
-extern FATFS fs;
-#endif
+extern const UosRomFile romFiles[];
 
 static void mainTask(void *arg)
 {
+  uosInit();
   nosPrint("Main task startup.\n");
   uosBootDiag();
-
-#if UOSCFG_FAT
-  f_mount(&fs, 0, 1);
-#endif
+  uosMountRom("/", romFiles);
 
   initNetwork();
   initSensors();
@@ -60,7 +55,6 @@ static void mainTask(void *arg)
 int main(int argc, char **argv)
 {
   initBoard();
-  uosInit();
   nosInit(mainTask, NULL, 5, 700, 200);
   return 0;
 }

@@ -34,12 +34,6 @@
 #include "sensor-web.h"
 #include "sys/socket.h"
 
-#if UOSCFG_FAT
-#include "ff.h"
-#else
-#include "webfiles.h"
-#endif
-
 #define TRACENAME "httpd: "
 
 #include <string.h>
@@ -58,10 +52,6 @@ const Mime mimeTypes[] = {
     { "js", "text/javascript" },
     { "txt", "text/plain" }
 };
-
-#if UOSCFG_FAT
-FATFS fs;
-#endif
 
 #define SOCK_BUF_SIZE UIP_TCP_MSS
 #define T2I(t) (int)(t)
@@ -199,12 +189,9 @@ static int http(NetSock* sock)
   int i;
   int bytes;
   bool cgi;
-#if UOSCFG_FAT
   bool gz;
-  UINT br;
-#else
-  const FileEntry *file;
-#endif
+  UosFile* file;
+  int len;
 
   i = netSockReadLine(sock, buf, sizeof(buf), MS(5000));
   if (i <= 0) {
@@ -268,11 +255,6 @@ static int http(NetSock* sock)
   if (!strcmp(url, "/"))
     strcpy(url, "/index.html");
 
-#if UOSCFG_FAT
-  FIL f;
-  FRESULT rc;
-#endif
-
   ptr = strchr(url, '?');
   if (ptr != NULL)
     *ptr = '\0';
@@ -280,39 +262,19 @@ static int http(NetSock* sock)
     cgi = true;
   else {
     cgi = false;
-#if UOSCFG_FAT
+
     gz = false;
-    rc = f_open(&f, url, FA_READ);
-    if (rc == FR_NO_FILE) {
+    file = uosFileOpen(url, 0, 0);
+    if (file == NULL) {
 
       strcpy(buf, url);
       strcat(buf, ".gz");
-      rc = f_open(&f, buf, FA_READ);
+      file = uosFileOpen(buf, 0, 0);
       gz = true;
     }
-
-#else
-    file = NULL;
-    const FileEntry* fe = files;
-    while (fe->fileName != NULL) {
-
-      if (!strcmp(url + 1, fe->fileName)) {
-
-        file = fe;
-        break;
-      }
-
-      fe = fe + 1;
-    }
-
-#endif
   }
 
-#if UOSCFG_FAT
-  if (!cgi && rc) {
-#else
   if (!cgi && file == NULL) {
-#endif
 
     buf[0] = '\0';
     strcat(buf, "HTTP/1.1 500 Not found\r\n");
@@ -343,17 +305,13 @@ static int http(NetSock* sock)
           }
       }
 
-#if UOSCFG_FAT
       if (gz)
-#else
-      if (file->gzip)
-#endif
         strcat(buf, "Content-Encoding: gzip\r\n");
     }
     else
       strcat(buf, "Content-Type: text/plain\r\n");
 
-    if (cgi) // || !strcmp(url, "/index.html"))
+    if (cgi)
       strcat(buf, "Cache-control: max-age=10\r\n");
     else
       strcat(buf, "Cache-control: max-age=3600\r\n");
@@ -364,21 +322,18 @@ static int http(NetSock* sock)
     if (cgi)
       bytes = serveCgi(sock, url, buf);
     else {
-#if UOSCFG_FAT
+
       bytes = 0;
       do {
-        rc = f_read(&f, buf, sizeof(buf), &br);
-        if (rc == 0 && br > 0) {
-          bytes += br;
-          i = netSockWrite(sock, buf, br);
+   
+        len = uosFileRead(file, buf, sizeof(buf));
+        if (len > 0) {
+          bytes += len;
+          i = netSockWrite(sock, buf, len);
         }
-      }while (rc == 0 && br > 0);
+      }while (len > 0);
 
-      rc = f_close(&f);
-#else
-      netSockWrite(sock, file->contents, file->size);
-      bytes = file->size;
-#endif
+      uosFileClose(file);
     }
     return bytes;
   }

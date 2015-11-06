@@ -28,12 +28,13 @@
 # OF THE POSSIBILITY OF SUCH DAMAGE.
 
 FILES=`cd www; find * -type f -print |
+	fgrep -v LICENSE |
 	fgrep -v .AppleDouble |
 	fgrep -v .cgi |
 	fgrep -v .DS_Store`
 
 echo "#include <picoos.h>"
-echo "#include \"webfiles.h\""
+echo "#include <picoos-u.h>"
 
 FILENO=0
 BYTES=0
@@ -55,7 +56,7 @@ do
 done
 
 echo ""
-echo "const FileEntry files[] = {"
+echo "const UosRomFile romFiles[] = {"
 
 FILENO=0
 for F in $FILES
@@ -63,13 +64,13 @@ do
    FILENO=`expr $FILENO + 1`
    case $F in
    *.jpg|*.png|*.gif)
-      GZIP=false ;;
+      GZIP="" ;;
    *)
-      GZIP=true ;;
+      GZIP=".gz" ;;
    esac
 
-   echo "{ \"$F\", $GZIP, file_$FILENO, sizeof(file_$FILENO) },"
+   echo "{ \"$F$GZIP\", file_$FILENO, sizeof(file_$FILENO) },"
 done
 
-echo "{ NULL, false, NULL, 0 }"
+echo "{ NULL, NULL, 0 }"
 echo "};"
